@@ -1,24 +1,13 @@
 package com.aleksandrbogomolov.essential_scala.tree
 
-sealed trait Tree {
-
-  def sum: Int = {
-    def calculate(tree: Tree, total: Int): Int = tree match {
-      case Leaf(element) => total + element
-      case Node(left, right) => calculate(left, total) + calculate(right, total)
-    }
-    calculate(this, 0)
-  }
-
-  def double: Tree = {
-    def calculate(tree: Tree): Tree = tree match {
-      case Leaf(element) => Leaf(element * 2)
-      case Node(left, right) => Node(calculate(left), calculate(right))
-    }
-    calculate(this)
-  }
+sealed trait Tree[A] {
+  def fold[B](node: (B, B) => B, leaf: A => B): B
 }
 
-case class Node(left: Tree, right: Tree) extends Tree
+case class Node[A](left: Tree[A], right: Tree[A]) extends Tree[A] {
+  override def fold[B](node: (B, B) => B, leaf: A => B): B = node(left.fold(node, leaf), right.fold(node, leaf))
+}
 
-case class Leaf(element: Int) extends Tree
+case class Leaf[A](element: A) extends Tree[A] {
+  override def fold[B](node: (B, B) => B, leaf: A => B): B = leaf(element)
+}
