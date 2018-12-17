@@ -2,20 +2,20 @@ package com.aleksandrbogomolov.essential_scala.intlist
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class MainIntListTest extends FlatSpec with Matchers {
+class IntListTest extends FlatSpec with Matchers {
 
   val example = Pair(1, Pair(2, Pair(3, End)))
 
   "A functions sum" should "return 6" in {
-    assert(MainIntList.sum(example) == 6)
+    assert(example.sum == 6)
   }
 
   "A functions sum" should "return 5" in {
-    assert(MainIntList.sum(example.tail) == 5)
+    assert(example.tail.sum == 5)
   }
 
   "A functions sum" should "return 0" in {
-    assert(MainIntList.sum(End) == 0)
+    assert(End.sum == 0)
   }
 
   "A functions length" should "return 3" in {

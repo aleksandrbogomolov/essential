@@ -1,29 +1,18 @@
 package com.aleksandrbogomolov.essential_scala.intlist
 
 sealed trait IntList {
-  def length: Int =
-    this match {
-      case End => 0
-      case Pair(_, tail) => 1 + tail.length
-    }
+  def fold[A](end: A, f: (Int, A) => A): A = this match {
+    case End => end
+    case Pair(hd, tl) => f(hd, tl.fold(end, f))
+  }
 
-  def double: IntList =
-    this match {
-      case End => End
-      case Pair(head, tail) => Pair(head * 2, tail.double)
-    }
+  def length: Int = fold(0, (_, tl) => 1 + tl)
 
-  def product: Int =
-    this match {
-      case End => 1
-      case Pair(head, tail) => head * tail.product
-    }
+  def product: Int = fold(1, (hd, tl) => hd * tl)
 
-  def sum: Int =
-    this match {
-      case End => 0
-      case Pair(head, tail) => head + tail.sum
-    }
+  def sum: Int = fold(0, (hd, tl) => hd + tl)
+
+  def double: IntList = fold[IntList](End, (hd, tl) => Pair(hd * 2, tl))
 }
 
 case object End extends IntList
