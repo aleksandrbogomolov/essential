@@ -6,11 +6,11 @@ sealed trait IntList {
     case Pair(hd, tl) => f(hd, tl.fold(accum, f))
   }
 
-  def length: Int = fold(0, (_, tl) => 1 + tl)
+  def length: Int = fold[Int](0, (_, tl) => 1 + tl)
 
-  def product: Int = fold(1, (hd, tl) => hd * tl)
+  def product: Int = fold[Int](1, (hd, tl) => hd * tl)
 
-  def sum: Int = fold(0, (hd, tl) => hd + tl)
+  def sum: Int = fold[Int](0, (hd, tl) => hd + tl)
 
   def double: IntList = fold[IntList](End, (hd, tl) => Pair(hd * 2, tl))
 }
