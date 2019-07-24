@@ -18,7 +18,7 @@ sealed trait LinkedList[A] {
 
   def fold[B](end: B, f: (A, B) => B): B = this match {
     case Empty() => end
-    case Pair(hd, tl) => f(hd, tl.fold(end, f))
+    case Pair(head, tail) => f(head, tail.fold(end, f))
   }
 }
 
